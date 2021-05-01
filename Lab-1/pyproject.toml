@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "scrapy_lab1"
+version = "0.1.0"
+description = ""
+authors = ["ProbablyNextTime <rumarenko3@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Scrapy = "^2.4.1"
+lxml = "^4.6.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
