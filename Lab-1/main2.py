@@ -12,19 +12,24 @@ INITIAL_URL = 'https://zvetsad.com.ua/catalog/klematisyi/'
 def parse_zvetsad_website() -> None:
     xml_root = ET.Element("shop")
     htmlparser = etree.HTMLParser()
-
+    # parse initial page to get list of urls to parse
     urls_to_parse: List[str] = parse_initial_page(htmlparser)
 
+    # parse each url to get product info
     for url in urls_to_parse:
         response = urlopen(url)
         tree = etree.parse(response, htmlparser)
         parse_product_page(xml_root, tree, url)
 
+    # wrtie parsed xml to zvetsad_website.xml
     xml_tree = ET.ElementTree(xml_root)
     xml_tree.write("zvetsad_website.xml", encoding="UTF-8")
 
+    # get transform config
     transform = etree.XSLT(etree.parse("./transform.xsl"))
+    # transform .xml to .xhtml
     result = transform(etree.parse("./zvetsad_website.xml"))
+    # write result to parsed_zvetsad.xhtml
     result.write("./parsed_zvetsad.xhtml", pretty_print=True, encoding="UTF-8")
     webbrowser.open('file://' + os.path.realpath("./parsed_zvetsad.xhtml"))
     return

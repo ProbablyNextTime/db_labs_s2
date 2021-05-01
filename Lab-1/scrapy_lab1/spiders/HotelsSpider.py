@@ -30,12 +30,15 @@ class HotelsSpider(scrapy.Spider):
         'uahotels.info'
     ]
 
-
+    # parses uahotels website
     def parse(self, response):
+        # get text elements
         text = filter(string_not_empty,
             map(lambda str: str.strip(),
                 [text.extract() for text in response.xpath(self.fields["text"])]))
 
+
+        # get image elements
         images = map(lambda url: ((response.url + url) if url.startswith('/') else url),
             [img_url.extract() for img_url in response.xpath(self.fields["img"])])
 
@@ -45,5 +48,6 @@ class HotelsSpider(scrapy.Spider):
             'url': response.url
         }
 
+        # follow next link
         for link_url in response.xpath(self.fields['link']):
             yield response.follow(link_url.extract(), callback=self.parse)

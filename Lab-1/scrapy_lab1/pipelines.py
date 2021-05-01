@@ -11,6 +11,7 @@ class HotelsXMLPipeline:
         with open('results/uahotels.xml', 'wb') as file:
             etree.ElementTree(self.root).write(file, pretty_print=True, encoding="UTF-8")
 
+    # parses single page
     def process_item(self, item, spider):
         page = etree.SubElement(self.root, 'page', url=item['url'])
         for text in item['text']:
